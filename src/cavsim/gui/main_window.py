@@ -12,7 +12,7 @@ from ..core.cavity import Cavity
 from ..core.elements import FlatMirror, CurvedMirror, ThinLens, Crystal
 from ..io import project
 from .inspector import Inspector
-from .plots import CausticPlot, ScanPanel
+from .plots import CausticPlot, Map2DPanel, ScanPanel
 from .viewport3d import Viewport3D
 
 MIN_GAP = 0.5e-3  # ドラッグ時に許す最小間隔 [m]
@@ -76,9 +76,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.caustic_plot = CausticPlot()
         self.scan_panel = ScanPanel(lambda: self.cavity)
+        self.map2d_panel = Map2DPanel(lambda: self.cavity, self._apply_two_spacings)
         tabs = QtWidgets.QTabWidget()
         tabs.addTab(self.caustic_plot, "コースティック w(s)")
         tabs.addTab(self.scan_panel, "安定性スキャン")
+        tabs.addTab(self.map2d_panel, "2Dマップ")
         dock = QtWidgets.QDockWidget("解析", self)
         dock.setWidget(tabs)
         dock.setFeatures(QtWidgets.QDockWidget.DockWidgetMovable)
@@ -131,6 +133,15 @@ class MainWindow(QtWidgets.QMainWindow):
         act_disp = QtGui.QAction("往復分散レポート (GDD/TOD)...", self)
         act_disp.triggered.connect(self.show_dispersion_report)
         m_ana.addAction(act_disp)
+        act_sens = QtGui.QAction("ミラー傾き感度...", self)
+        act_sens.triggered.connect(self.show_sensitivity_report)
+        m_ana.addAction(act_sens)
+        act_marg = QtGui.QAction("安定許容差 (各間隔)...", self)
+        act_marg.triggered.connect(self.show_margins_report)
+        m_ana.addAction(act_marg)
+        act_out = QtGui.QAction("出力ビーム (端面鏡の外側)...", self)
+        act_out.triggered.connect(self.show_output_beam_report)
+        m_ana.addAction(act_out)
 
     # --- 解析アクション ----------------------------------------------
     def compute_compensation_angle(self):
@@ -162,6 +173,75 @@ class MainWindow(QtWidgets.QMainWindow):
             for el in folds:
                 el.aoi_deg = res.theta_deg
             self.recompute(full=True)
+
+    def _apply_two_spacings(self, ia, va, ib, vb):
+        """2D マップのクリックから両間隔を設定する."""
+        self.cavity.spacings[ia] = max(MIN_GAP, float(va))
+        self.cavity.spacings[ib] = max(MIN_GAP, float(vb))
+        self.recompute(light=True)
+        self.status.showMessage(
+            f"d{ia} = {va*1e3:.2f} mm, d{ib} = {vb*1e3:.2f} mm に設定", 4000)
+
+    def _show_text_dialog(self, title: str, text: str, note: str = ""):
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle(title)
+        lay = QtWidgets.QVBoxLayout(dlg)
+        box = QtWidgets.QPlainTextEdit(text)
+        box.setReadOnly(True)
+        box.setFont(QtGui.QFont("monospace"))
+        box.setMinimumSize(680, 300)
+        lay.addWidget(box)
+        if note:
+            lab = QtWidgets.QLabel(note)
+            lab.setWordWrap(True)
+            lay.addWidget(lab)
+        dlg.exec()
+
+    def show_sensitivity_report(self):
+        from ..analysis.sensitivity import sensitivity_text
+        try:
+            txt = sensitivity_text(self.cavity)
+        except ValueError as exc:
+            QtWidgets.QMessageBox.warning(self, "傾き感度", str(exc))
+            return
+        self._show_text_dialog(
+            "ミラー傾き感度", txt,
+            "符号は規約上のもの (PHYSICS.md §12)。大きさで感度を比較してください。"
+            " 折返し鏡は1往復2反射として扱う第一次近似です。")
+
+    def show_margins_report(self):
+        from ..analysis.scan import stability_margins
+        try:
+            margins = stability_margins(self.cavity)
+        except ValueError as exc:
+            QtWidgets.QMessageBox.warning(self, "安定許容差", str(exc))
+            return
+        fmt = lambda v: "範囲内に境界なし" if v is None else f"{v*1e3:8.3f} mm"
+        lines = ["各間隔を単独で動かした場合の不安定化までの距離", ""]
+        for k, (down, up) in enumerate(margins):
+            a, b = self.cavity.elements[k].name, self.cavity.elements[k+1].name
+            lines.append(f"d{k} ({a} – {b}, 現在 "
+                         f"{self.cavity.spacings[k]*1e3:.2f} mm): "
+                         f"−{fmt(down)} / +{fmt(up)}")
+        self._show_text_dialog("安定許容差", "\n".join(lines),
+                               "探索範囲は現在値 ±50%。他の間隔は固定。")
+
+    def show_output_beam_report(self):
+        from ..analysis.beamfit import output_beam_text
+        from ..core.elements import FlatMirror
+        texts = []
+        for idx in (len(self.cavity.elements) - 1, 0):
+            if isinstance(self.cavity.elements[idx], FlatMirror):
+                try:
+                    texts.append(output_beam_text(self.cavity, idx))
+                except ValueError as exc:
+                    texts.append(f"({self.cavity.elements[idx].name}: {exc})")
+        if not texts:
+            QtWidgets.QMessageBox.information(
+                self, "出力ビーム", "平面の端面鏡がありません (曲面端は未対応)")
+            return
+        self._show_text_dialog("出力ビーム", "\n\n".join(texts),
+                               "基板の屈折・レンズ効果は無視 (薄い平面 OC 近似)。")
 
     def show_dispersion_report(self):
         from ..analysis.dispersion import round_trip_dispersion
@@ -248,6 +328,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if full:
             self._refresh_list()
             self.scan_panel.refresh_choices()
+            self.map2d_panel.refresh_choices()
             self.inspector.set_target(self.cavity, self.selected)
         if light:
             self.inspector.refresh_spacings()
