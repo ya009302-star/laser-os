@@ -1,6 +1,6 @@
 # VALIDATION — 検証状況
 
-最終更新: 2026-06-12 (cavsim v0.1.0)
+最終更新: 2026-06-13 (cavsim v0.2.1)
 
 本ファイルは cavsim の物理計算がどこまで検証されているかを記録する。
 **実施していない検証を記載してはならない。** 状態は以下の3段階で表す。
@@ -9,7 +9,7 @@
 - `VERIFIED-EXPERIMENT` : 実測データと照合済み
 - `UNVALIDATED` : 未検証
 
-## 1. 自動テストによる検証 (v0.2 開発中: tests/ 全17件合格)
+## 1. 自動テストによる検証 (v0.2.1: tests/ 全58件合格)
 
 | 項目 | テスト | 状態 |
 |---|---|---|
@@ -24,6 +24,12 @@
 | 間隔スキャンの安定領域検出 | `test_scan_finds_stable_zone` | VERIFIED-ANALYTIC |
 | 補償角: 閉形式↔厳密行列数値解の一致 | `tests/test_astigmatism.py` (4件) | VERIFIED-ANALYTIC |
 | ブリュースター横変位の解析式・経路連続性 | `tests/test_geometry.py` (4件) | VERIFIED-ANALYTIC |
+| 熱レンズ: 手組み等価系との厳密一致・f→∞連続性 | `tests/test_thermal.py` (6件) | VERIFIED-ANALYTIC |
+| 材料分散: λ式↔ω直接微分の整合・文献アンカー (溶融石英) | `tests/test_dispersion.py` (8件) | VERIFIED-ANALYTIC |
+| 実測比較ワークフローの配管 (合成測定による) | `tests/test_comparison.py` (6件) | VERIFIED-ANALYTIC |
+| ミスアライメント感度: 2鏡共振器の幾何学的厳密解 | `tests/test_sensitivity.py` (9件) | VERIFIED-ANALYTIC |
+| 2Dマップ↔1Dスキャン一致・許容差↔安定帯端の整合 | `tests/test_scan2d.py` (5件) | VERIFIED-ANALYTIC |
+| 出力ビーム解析解・z–w フィット復元 (M² 含む) | `tests/test_beamfit.py` (7件) | VERIFIED-ANALYTIC |
 
 ## 2. 実験との比較
 
@@ -47,7 +53,10 @@ VERIFIED-EXPERIMENT への昇格手順:
 - ブリュースター結晶のビーム横変位: v0.2 で 3D 配置にモデル化
   (横変位 ℓ(n²−1)/(n²+1) の解析式照合 → VERIFIED-ANALYTIC,
   tests/test_geometry.py。実機描画・実寸照合は UNVALIDATED のまま)
-- 分散・熱レンズは未実装のため検証対象外
+- ミスアライメント感度の符号規約 (PHYSICS.md §12) と実機の調整ノブの
+  向きとの対応は UNVALIDATED (大きさの比較には影響しない)
+- 出力ビームは薄い平面基板近似 (基板の屈折・レンズ効果は無視): 実測照合は
+  UNVALIDATED
 
 ## 4. 検証の更新規則
 
