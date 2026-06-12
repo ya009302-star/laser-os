@@ -148,3 +148,31 @@ PropOp↔PathSegment 1:1 対応)。
 
 制限: ブリュースター結晶の熱レンズは実際には t/s で非対称になりうるが、
 v0.2 では単一 f の等方モデルのみ (ROADMAP の単純モデル方針)。
+
+## 11. 分散記帳 (GDD/TOD, v0.2)
+
+### 素子ごとの寄与
+- ミラー: 1 反射あたり `gdd_fs2` / `tod_fs3` (コーティング値, ユーザー入力)
+- レンズ: 1 通過あたり同上 (基板等)
+- 結晶/板: 1 通過あたり = 材料分散 (material 設定時) + 追加分 (`gdd_fs2` 等)
+
+### 往復集計 (`analysis/dispersion.py`)
+端面鏡 ×1、中間素子 ×2、結晶 ×2 通過/往復。空気分散は無視
+(典型共振器長では fs² 未満)。
+
+### 材料分散 (`core/materials.py`)
+Sellmeier 式 n²(λ) = 1 + Σ Bᵢλ²/(λ²−Cᵢ) (λ: µm) から
+
+    k₂ = (λ³ / 2πc²) · d²n/dλ²                     [s²/m]
+    k₃ = −(λ⁴ / 4π²c³) · (3·d²n/dλ² + λ·d³n/dλ³)   [s³/m]
+
+GDD = k₂·ℓ, TOD = k₃·ℓ (ℓ: 媒質内パス)。λ 微分は 5 点中心差分で評価し、
+k(ω) = n·ω/c の ω 直接微分との一致をテストで担保
+(tests/test_dispersion.py)。
+
+### データ規律 (CONTRIBUTING 規則 3・4)
+材料エントリは source_status と出典が必須。'estimated'/'unknown' の使用時は
+警告。v0.2 収録は fused_silica (Malitson 1965) のみ。
+**Yb:YAG / YAG は係数の出典指定があり次第追加する** (推定値での登録は禁止)。
+`Crystal.material` は分散記帳専用であり、ABCD 計算の n は変更しない
+(挙動保全, 規則 5)。
