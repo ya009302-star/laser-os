@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "name": "シンプル線形共振器",
+  "wavelength_nm": 1064.0,
+  "elements": [
+    {
+      "type": "flat_mirror",
+      "name": "HR",
+      "aoi_deg": 0.0,
+      "turn": 1,
+      "role": "end"
+    },
+    {
+      "type": "curved_mirror",
+      "name": "OC",
+      "roc_mm": 500.0,
+      "aoi_deg": 0.0,
+      "turn": 1,
+      "role": "end"
+    }
+  ],
+  "spacings_mm": [
+    300.0
+  ]
+}

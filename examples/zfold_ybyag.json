@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "name": "Z-fold Yb:YAG",
+  "wavelength_nm": 1030.0,
+  "elements": [
+    {
+      "type": "flat_mirror",
+      "name": "SESAM",
+      "aoi_deg": 0.0,
+      "turn": 1,
+      "role": "end"
+    },
+    {
+      "type": "curved_mirror",
+      "name": "CM1",
+      "roc_mm": 100.0,
+      "aoi_deg": 8.0,
+      "turn": 1,
+      "role": "fold"
+    },
+    {
+      "type": "crystal",
+      "name": "Yb:YAG",
+      "length_mm": 3.0,
+      "n": 1.82,
+      "brewster": true
+    },
+    {
+      "type": "curved_mirror",
+      "name": "CM2",
+      "roc_mm": 100.0,
+      "aoi_deg": 8.0,
+      "turn": -1,
+      "role": "fold"
+    },
+    {
+      "type": "flat_mirror",
+      "name": "OC",
+      "aoi_deg": 0.0,
+      "turn": 1,
+      "role": "end"
+    }
+  ],
+  "spacings_mm": [
+    250.0,
+    50.55,
+    50.55,
+    600.0
+  ]
+}

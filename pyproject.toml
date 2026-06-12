@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cavsim"
+version = "0.1.0"
+description = "Laser cavity design simulator (ABCD, t/s planes, 3D viewport)"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "pyqtgraph>=0.13", "PySide6-Essentials>=6.5", "PyOpenGL>=3.1"]
+
+[project.scripts]
+cavsim = "cavsim.gui.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
