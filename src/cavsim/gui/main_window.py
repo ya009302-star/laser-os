@@ -124,6 +124,67 @@ class MainWindow(QtWidgets.QMainWindow):
         act_del.triggered.connect(self.delete_element)
         m_edit.addAction(act_del)
 
+        m_ana = self.menuBar().addMenu("解析(&A)")
+        act_comp = QtGui.QAction("非点収差補償角を計算...", self)
+        act_comp.triggered.connect(self.compute_compensation_angle)
+        m_ana.addAction(act_comp)
+        act_disp = QtGui.QAction("往復分散レポート (GDD/TOD)...", self)
+        act_disp.triggered.connect(self.show_dispersion_report)
+        m_ana.addAction(act_disp)
+
+    # --- 解析アクション ----------------------------------------------
+    def compute_compensation_angle(self):
+        """折返し凹面鏡の補償角を閉形式+数値最適化で求め, 適用を提案する."""
+        from ..analysis.astigmatism import (compensation_angle,
+                                            find_compensation_angle)
+        folds = [el for el in self.cavity.elements
+                 if isinstance(el, CurvedMirror) and el.role == "fold"]
+        crystals = [el for el in self.cavity.elements
+                    if isinstance(el, Crystal) and el.brewster]
+        if not folds or not crystals:
+            QtWidgets.QMessageBox.information(
+                self, "補償角",
+                "折返し凹面鏡とブリュースター結晶の両方が必要です")
+            return
+        cr = crystals[0]
+        th_cf = np.degrees(compensation_angle(
+            folds[0].roc, cr.length, cr.n, n_mirrors=len(folds)))
+        try:
+            res = find_compensation_angle(self.cavity, metric="match_m")
+            numeric = f"{res.theta_deg:.2f}° (|m_t−m_s|={res.metric_value:.2e})"
+        except Exception as exc:                       # noqa: BLE001
+            res, numeric = None, f"失敗: {exc}"
+        msg = (f"閉形式 (第一次近似): {th_cf:.2f}°\n"
+               f"数値最適化 (厳密行列): {numeric}\n\n"
+               f"数値解を折返し凹面鏡 {len(folds)} 枚の入射角に適用しますか?")
+        btn = QtWidgets.QMessageBox.question(self, "非点収差補償角", msg)
+        if btn == QtWidgets.QMessageBox.Yes and res is not None:
+            for el in folds:
+                el.aoi_deg = res.theta_deg
+            self.recompute(full=True)
+
+    def show_dispersion_report(self):
+        from ..analysis.dispersion import round_trip_dispersion
+        try:
+            rep = round_trip_dispersion(self.cavity)
+        except KeyError as exc:
+            QtWidgets.QMessageBox.warning(self, "分散レポート", str(exc))
+            return
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle("往復分散レポート")
+        lay = QtWidgets.QVBoxLayout(dlg)
+        txt = QtWidgets.QPlainTextEdit(rep.to_text())
+        txt.setReadOnly(True)
+        txt.setFont(QtGui.QFont("monospace"))
+        txt.setMinimumSize(640, 280)
+        lay.addWidget(txt)
+        note = QtWidgets.QLabel(
+            "ミラー/レンズの GDD・TOD はインスペクタでユーザー入力 "
+            "(データシート値)。結晶は材料DB (出典付き) + 追加分。")
+        note.setWordWrap(True)
+        lay.addWidget(note)
+        dlg.exec()
+
     # ---------------------------------------------------------------
     def _w_scale(self) -> float:
         return 10 ** (1.0 + 3.0 * self.scale_slider.value() / 100.0)

@@ -10,12 +10,21 @@ from PySide6 import QtCore, QtWidgets
 from ..core.elements import FlatMirror, CurvedMirror, ThinLens, Crystal
 
 FIELD_SPECS = {
-    FlatMirror: [("入射角", "aoi_deg", 1.0, " °", 1, 0.0, 80.0)],
+    FlatMirror: [("入射角", "aoi_deg", 1.0, " °", 1, 0.0, 80.0),
+                 ("GDD/反射", "gdd_fs2", 1.0, " fs²", 1, -1e6, 1e6),
+                 ("TOD/反射", "tod_fs3", 1.0, " fs³", 1, -1e7, 1e7)],
     CurvedMirror: [("曲率半径 R", "roc", 1e-3, " mm", 1, -1e5, 1e5),
-                   ("入射角", "aoi_deg", 1.0, " °", 1, 0.0, 80.0)],
-    ThinLens: [("焦点距離 f", "f", 1e-3, " mm", 1, -1e5, 1e5)],
+                   ("入射角", "aoi_deg", 1.0, " °", 1, 0.0, 80.0),
+                   ("GDD/反射", "gdd_fs2", 1.0, " fs²", 1, -1e6, 1e6),
+                   ("TOD/反射", "tod_fs3", 1.0, " fs³", 1, -1e7, 1e7)],
+    ThinLens: [("焦点距離 f", "f", 1e-3, " mm", 1, -1e5, 1e5),
+               ("GDD/通過", "gdd_fs2", 1.0, " fs²", 1, -1e6, 1e6),
+               ("TOD/通過", "tod_fs3", 1.0, " fs³", 1, -1e7, 1e7)],
     Crystal: [("光路長 ℓ", "length", 1e-3, " mm", 2, 0.01, 1000.0),
-              ("屈折率 n", "n", 1.0, "", 3, 1.0, 5.0)],
+              ("屈折率 n", "n", 1.0, "", 3, 1.0, 5.0),
+              ("熱レンズ f (0=無効)", "thermal_f", 1e-3, " mm", 1, -1e6, 1e6),
+              ("追加GDD/通過", "gdd_fs2", 1.0, " fs²", 1, -1e6, 1e6),
+              ("追加TOD/通過", "tod_fs3", 1.0, " fs³", 1, -1e7, 1e7)],
 }
 
 
@@ -78,6 +87,19 @@ class Inspector(QtWidgets.QGroupBox):
             chk.toggled.connect(
                 lambda v, e=el: self._set_attr(e, "brewster", bool(v)))
             self._form.addRow("ブリュースター入射", chk)
+            combo_t = QtWidgets.QComboBox()
+            combo_t.addItems(["+1 (左)", "-1 (右)"])
+            combo_t.setCurrentIndex(0 if el.tilt >= 0 else 1)
+            combo_t.currentIndexChanged.connect(
+                lambda k, e=el: self._set_attr(e, "tilt", 1 if k == 0 else -1))
+            self._form.addRow("傾き向き (横変位)", combo_t)
+            mat_edit = QtWidgets.QLineEdit(el.material)
+            mat_edit.setPlaceholderText("材料DB名 (例: fused_silica, 空=未使用)")
+            mat_edit.setToolTip("分散記帳専用. ABCD の屈折率 n は変更しない")
+            mat_edit.editingFinished.connect(
+                lambda e=el, w=mat_edit: self._set_attr(
+                    e, "material", w.text().strip()))
+            self._form.addRow("材料 (分散用)", mat_edit)
 
         # 隣接間隔
         for off, label in ((-1, "前側の間隔"), (0, "後側の間隔")):
