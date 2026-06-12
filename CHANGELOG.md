@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.2.0 (2026-06-12)
+
+物理拡張 + 検証強化 (ROADMAP v0.2)。既存 JSON (schema_version=1) は
+そのまま読込可能 (追加フィールドはすべて省略可)。
+
+- 非点収差補償角: 閉形式 cosθ=√(1+M²)−M (M=ΔL/(kR)) と、厳密往復行列に
+  よる数値最適化 (`analysis/astigmatism.py`)。GUI「解析」メニューから
+  計算・適用可能
+- ブリュースター結晶のビーム横変位を 3D 配置にモデル化
+  (横変位 ℓ(n²−1)/(n²+1)、`Crystal.tilt` で向き指定)。ABCD は不変
+- 熱レンズ単純モデル: `Crystal.thermal_f` (ユーザー入力、結晶中央の
+  薄レンズ、t/s 等方)
+- 分散記帳: 全素子に GDD/TOD (反射/通過あたり、ユーザー入力)、
+  `analysis/dispersion.py` で往復集計レポート
+- 材料DB最小実装 (`core/materials.py`): source_status/出典必須、
+  estimated/unknown 使用時に警告。収録は fused_silica (Malitson 1965)
+  のみ。Yb:YAG 等は出典提供後に追加
+- 予測-実測比較ワークフロー (`analysis/comparison.py` +
+  `examples/measurements_template.json`)。VERIFIED-EXPERIMENT への
+  昇格手順を VALIDATION.md に明文化
+- テスト 9 → 37 件 (全合格)
+
 ## v0.1.0 (2026-06-12)
 
 初版。
