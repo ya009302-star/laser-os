@@ -137,6 +137,7 @@ class Crystal(Element):
     n: float = 1.82          # Yb:YAG @1030nm ≈ 1.82
     brewster: bool = True
     tilt: int = 1            # ブリュースター傾きの向き (+1/-1, 横変位の符号)
+    thermal_f: float = 0.0   # 熱レンズ焦点距離 [m] (0=無効, ユーザー入力値)
     type_id = "crystal"
 
     @property
@@ -150,13 +151,15 @@ class Crystal(Element):
 
     def to_dict(self):
         return {"type": self.type_id, "name": self.name, "length_mm": self.length * 1e3,
-                "n": self.n, "brewster": self.brewster, "tilt": self.tilt}
+                "n": self.n, "brewster": self.brewster, "tilt": self.tilt,
+                "thermal_f_mm": self.thermal_f * 1e3}
 
     @classmethod
     def from_dict(cls, d):
         return cls(name=d.get("name", ""), length=d["length_mm"] * 1e-3,
                    n=d.get("n", 1.82), brewster=d.get("brewster", True),
-                   tilt=d.get("tilt", 1))
+                   tilt=d.get("tilt", 1),
+                   thermal_f=d.get("thermal_f_mm", 0.0) * 1e-3)
 
 
 ELEMENT_TYPES = {c.type_id: c for c in (FlatMirror, CurvedMirror, ThinLens, Crystal)}

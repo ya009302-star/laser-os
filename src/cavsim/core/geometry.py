@@ -72,8 +72,18 @@ def build_layout(cav: Cavity):
                     cos_phi = 2.0 * n_med / (n_med**2 + 1.0)
                     seg_dir = direction * cos_phi + side * (tilt * sin_phi)
             center = pos + seg_dir * (el.path_length / 2)
-            segments.append(PathSegment(pos.copy(), seg_dir.copy(),
-                                        el.path_length, getattr(el, "n", 1.0)))
+            if getattr(el, "thermal_f", 0.0):
+                # 熱レンズ有効時: forward_ops と同様に伝搬を半分割し,
+                # PropOp ↔ PathSegment の 1:1 対応を保つ.
+                half = el.path_length / 2
+                segments.append(PathSegment(pos.copy(), seg_dir.copy(),
+                                            half, getattr(el, "n", 1.0)))
+                segments.append(PathSegment((pos + seg_dir * half).copy(),
+                                            seg_dir.copy(), half,
+                                            getattr(el, "n", 1.0)))
+            else:
+                segments.append(PathSegment(pos.copy(), seg_dir.copy(),
+                                            el.path_length, getattr(el, "n", 1.0)))
             pos = pos + seg_dir * el.path_length
             poses.append(ElementPose(i, center, in_dir, direction.copy(),
                                      seg_dir.copy(), el))

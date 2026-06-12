@@ -81,9 +81,23 @@ class Cavity:
                 ops.append(PropOp(d, {"t": d, "s": d}, 1.0, None))
             el = self.elements[i]
             if el.path_length > 0:
-                ops.append(PropOp(el.path_length,
-                                  {p: el.reduced_length(p) for p in PLANES},
-                                  getattr(el, "n", 1.0), el))
+                f_th = getattr(el, "thermal_f", 0.0)
+                if f_th:
+                    # 熱レンズ (単純モデル): 結晶中央に薄レンズを置き, 伝搬を半分割.
+                    # 縮約長は線形なので半分ずつの和は元の全長と厳密に一致する.
+                    half = PropOp(el.path_length / 2,
+                                  {p: el.reduced_length(p) / 2 for p in PLANES},
+                                  getattr(el, "n", 1.0), el)
+                    from .elements import ThinLens
+                    lens = ThinLens(name=f"{el.name}:thermal", f=f_th)
+                    ops.append(half)
+                    ops.append(MatOp(lens, i))
+                    ops.append(PropOp(half.geo_len, dict(half.red_len),
+                                      half.n, el))
+                else:
+                    ops.append(PropOp(el.path_length,
+                                      {p: el.reduced_length(p) for p in PLANES},
+                                      getattr(el, "n", 1.0), el))
             elif i < len(self.elements) - 1:
                 ops.append(MatOp(el, i))
         return ops
