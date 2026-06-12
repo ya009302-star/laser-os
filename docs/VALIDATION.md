@@ -27,10 +27,18 @@
 
 ## 2. 実験との比較
 
-**状態: UNVALIDATED**
+**状態: UNVALIDATED (比較ワークフローは v0.2 で整備済み・実測データ待ち)**
 
 実共振器 (Z-fold Yb:YAG 等) の実測モード径・安定領域との比較は未実施。
-v0.2 以降で予測-実測比較モジュールとともに整備する (docs/ROADMAP.md)。
+v0.2 で `cavsim.analysis.comparison` (測定記録 JSON → 予測比較レポート) と
+`examples/measurements_template.json` を整備した。配管は合成測定による
+自動テストで検証済み (tests/test_comparison.py)。
+
+VERIFIED-EXPERIMENT への昇格手順:
+1. テンプレートを複製し、実測値・測定条件を記入する
+2. `compare(cavity, load_measurements(path))` でレポートを生成する
+3. 人間が測定の妥当性を確認した上で、本ファイルに測定日・条件・
+   データ所在・結果 (平均比など) を記載して昇格させる
 
 ## 3. 未検証領域 (既知)
 
