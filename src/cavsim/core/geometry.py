@@ -56,13 +56,37 @@ def build_layout(cav: Cavity):
         el = cav.elements[i]
         in_dir = direction.copy()
 
-        if el.path_length > 0:                       # 結晶: 直進(変位は v0.2 で対応)
-            center = pos + direction * (el.path_length / 2)
-            segments.append(PathSegment(pos.copy(), direction.copy(),
-                                        el.path_length, getattr(el, "n", 1.0)))
-            pos = pos + direction * el.path_length
+        if el.path_length > 0:                       # 結晶/板
+            seg_dir = direction.copy()
+            if getattr(el, "brewster", False):
+                # ブリュースター入射: 媒質内光線は入射軸から角 φ だけ傾く.
+                #   sinφ = (n²−1)/(n²+1),  cosφ = 2n/(n²+1)
+                # 出射は平行 (平行面スラブ). 横変位 = ℓ·sinφ, 軸方向前進 = ℓ·cosφ.
+                n_med = getattr(el, "n", 1.0)
+                tilt = getattr(el, "tilt", 1)
+                side = np.cross(direction, UP)
+                nrm = np.linalg.norm(side)
+                if nrm > 1e-12 and n_med > 1.0:
+                    side = side / nrm
+                    sin_phi = (n_med**2 - 1.0) / (n_med**2 + 1.0)
+                    cos_phi = 2.0 * n_med / (n_med**2 + 1.0)
+                    seg_dir = direction * cos_phi + side * (tilt * sin_phi)
+            center = pos + seg_dir * (el.path_length / 2)
+            if getattr(el, "thermal_f", 0.0):
+                # 熱レンズ有効時: forward_ops と同様に伝搬を半分割し,
+                # PropOp ↔ PathSegment の 1:1 対応を保つ.
+                half = el.path_length / 2
+                segments.append(PathSegment(pos.copy(), seg_dir.copy(),
+                                            half, getattr(el, "n", 1.0)))
+                segments.append(PathSegment((pos + seg_dir * half).copy(),
+                                            seg_dir.copy(), half,
+                                            getattr(el, "n", 1.0)))
+            else:
+                segments.append(PathSegment(pos.copy(), seg_dir.copy(),
+                                            el.path_length, getattr(el, "n", 1.0)))
+            pos = pos + seg_dir * el.path_length
             poses.append(ElementPose(i, center, in_dir, direction.copy(),
-                                     direction.copy(), el))
+                                     seg_dir.copy(), el))
             continue
 
         if el.deflects:                              # 折返しミラー

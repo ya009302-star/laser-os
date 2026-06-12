@@ -57,6 +57,8 @@ class FlatMirror(Element):
     aoi_deg: float = 0.0
     turn: int = 1            # 折返し方向 (+1: 左折 / -1: 右折, 水平面内)
     role: str = "end"        # 'end' or 'fold'
+    gdd_fs2: float = 0.0     # 1反射あたりの GDD [fs²] (コーティング値, ユーザー入力)
+    tod_fs3: float = 0.0     # 1反射あたりの TOD [fs³]
     type_id = "flat_mirror"
 
     def rt_matrix(self, plane):
@@ -72,12 +74,14 @@ class FlatMirror(Element):
 
     def to_dict(self):
         return {"type": self.type_id, "name": self.name, "aoi_deg": self.aoi_deg,
-                "turn": self.turn, "role": self.role}
+                "turn": self.turn, "role": self.role,
+                "gdd_fs2": self.gdd_fs2, "tod_fs3": self.tod_fs3}
 
     @classmethod
     def from_dict(cls, d):
         return cls(name=d.get("name", ""), aoi_deg=d.get("aoi_deg", 0.0),
-                   turn=d.get("turn", 1), role=d.get("role", "end"))
+                   turn=d.get("turn", 1), role=d.get("role", "end"),
+                   gdd_fs2=d.get("gdd_fs2", 0.0), tod_fs3=d.get("tod_fs3", 0.0))
 
 
 @dataclass
@@ -87,6 +91,8 @@ class CurvedMirror(Element):
     aoi_deg: float = 0.0
     turn: int = 1
     role: str = "fold"
+    gdd_fs2: float = 0.0     # 1反射あたりの GDD [fs²]
+    tod_fs3: float = 0.0     # 1反射あたりの TOD [fs³]
     type_id = "curved_mirror"
 
     def rt_matrix(self, plane):
@@ -102,29 +108,35 @@ class CurvedMirror(Element):
 
     def to_dict(self):
         return {"type": self.type_id, "name": self.name, "roc_mm": self.roc * 1e3,
-                "aoi_deg": self.aoi_deg, "turn": self.turn, "role": self.role}
+                "aoi_deg": self.aoi_deg, "turn": self.turn, "role": self.role,
+                "gdd_fs2": self.gdd_fs2, "tod_fs3": self.tod_fs3}
 
     @classmethod
     def from_dict(cls, d):
         return cls(name=d.get("name", ""), roc=d["roc_mm"] * 1e-3,
                    aoi_deg=d.get("aoi_deg", 0.0), turn=d.get("turn", 1),
-                   role=d.get("role", "fold"))
+                   role=d.get("role", "fold"),
+                   gdd_fs2=d.get("gdd_fs2", 0.0), tod_fs3=d.get("tod_fs3", 0.0))
 
 
 @dataclass
 class ThinLens(Element):
     f: float = 0.1           # [m]
+    gdd_fs2: float = 0.0     # 1通過あたりの GDD [fs²] (基板等, ユーザー入力)
+    tod_fs3: float = 0.0     # 1通過あたりの TOD [fs³]
     type_id = "thin_lens"
 
     def rt_matrix(self, plane):
         return mat.thin_lens(self.f)
 
     def to_dict(self):
-        return {"type": self.type_id, "name": self.name, "f_mm": self.f * 1e3}
+        return {"type": self.type_id, "name": self.name, "f_mm": self.f * 1e3,
+                "gdd_fs2": self.gdd_fs2, "tod_fs3": self.tod_fs3}
 
     @classmethod
     def from_dict(cls, d):
-        return cls(name=d.get("name", ""), f=d["f_mm"] * 1e-3)
+        return cls(name=d.get("name", ""), f=d["f_mm"] * 1e-3,
+                   gdd_fs2=d.get("gdd_fs2", 0.0), tod_fs3=d.get("tod_fs3", 0.0))
 
 
 @dataclass
@@ -136,6 +148,11 @@ class Crystal(Element):
     length: float = 3e-3     # [m]
     n: float = 1.82          # Yb:YAG @1030nm ≈ 1.82
     brewster: bool = True
+    tilt: int = 1            # ブリュースター傾きの向き (+1/-1, 横変位の符号)
+    thermal_f: float = 0.0   # 熱レンズ焦点距離 [m] (0=無効, ユーザー入力値)
+    material: str = ""       # 材料DB参照名 (分散記帳に使用; ABCD の n は変えない)
+    gdd_fs2: float = 0.0     # 1通過あたりの追加 GDD [fs²] (材料分とは加算)
+    tod_fs3: float = 0.0     # 1通過あたりの追加 TOD [fs³]
     type_id = "crystal"
 
     @property
@@ -149,12 +166,19 @@ class Crystal(Element):
 
     def to_dict(self):
         return {"type": self.type_id, "name": self.name, "length_mm": self.length * 1e3,
-                "n": self.n, "brewster": self.brewster}
+                "n": self.n, "brewster": self.brewster, "tilt": self.tilt,
+                "thermal_f_mm": self.thermal_f * 1e3,
+                "material": self.material,
+                "gdd_fs2": self.gdd_fs2, "tod_fs3": self.tod_fs3}
 
     @classmethod
     def from_dict(cls, d):
         return cls(name=d.get("name", ""), length=d["length_mm"] * 1e-3,
-                   n=d.get("n", 1.82), brewster=d.get("brewster", True))
+                   n=d.get("n", 1.82), brewster=d.get("brewster", True),
+                   tilt=d.get("tilt", 1),
+                   thermal_f=d.get("thermal_f_mm", 0.0) * 1e-3,
+                   material=d.get("material", ""),
+                   gdd_fs2=d.get("gdd_fs2", 0.0), tod_fs3=d.get("tod_fs3", 0.0))
 
 
 ELEMENT_TYPES = {c.type_id: c for c in (FlatMirror, CurvedMirror, ThinLens, Crystal)}

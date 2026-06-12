@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "_template_note": "これはテンプレートです。数値はすべてダミー。実測値で置き換え、未測定の点は w_um を null のままにしてください。",
+  "cavity_file": "zfold_ybyag.json",
+  "date": "YYYY-MM-DD",
+  "instrument": "ビームプロファイラ/ナイフエッジ等の型番",
+  "operator": "",
+  "notes": "ポンプパワー、室温、アライメント状態などの測定条件をここに記録",
+  "points": [
+    {
+      "element": "OC",
+      "plane": "t",
+      "w_um": null,
+      "err_um": null,
+      "method": "knife-edge"
+    },
+    {
+      "element": "OC",
+      "plane": "s",
+      "w_um": null,
+      "err_um": null,
+      "method": "knife-edge"
+    },
+    {
+      "element": "SESAM",
+      "plane": "t",
+      "w_um": null,
+      "err_um": null,
+      "method": "camera"
+    },
+    {
+      "s_mm": 850.0,
+      "plane": "t",
+      "w_um": null,
+      "err_um": null,
+      "method": "camera",
+      "_note": "経路座標 s_mm でも指定可 (素子0表面 = 0)"
+    }
+  ]
+}

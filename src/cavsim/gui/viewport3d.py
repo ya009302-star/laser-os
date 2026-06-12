@@ -94,7 +94,8 @@ if HAS_GL:
                 md = _box_mesh(el.path_length * 1e3, 6.0, 6.0)
                 item = gl.GLMeshItem(meshdata=md, smooth=False, color=color,
                                      shader="shaded", drawEdges=True)
-                self._orient(item, np.array([1.0, 0, 0]), pose.out_dir)
+                # 媒質内のビーム軸 (pose.normal, ブリュースター時は傾斜) に沿わせる
+                self._orient(item, np.array([1.0, 0, 0]), pose.normal)
             else:
                 md = gl.MeshData.cylinder(rows=1, cols=40,
                                           radius=[6.35, 6.35], length=3.0)
