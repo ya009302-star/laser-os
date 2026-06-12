@@ -104,3 +104,25 @@ t面とs面で独立に判定する。両面とも |m| < 1 のときのみ共振
   "Astigmatically compensated cavities for CW dye lasers,"
   IEEE J. Quantum Electron. 8, 373 (1972).
 - A. E. Siegman, *Lasers*, University Science Books (1986). 特に Ch.15, 21.
+
+## 9. 非点収差補償角 (v0.2)
+
+ブリュースタースラブの縮約光路長差 ΔL = ℓ/n − ℓ/n³ を,
+折返し凹面鏡の焦点距離差 Δf(θ) = f/cosθ − f·cosθ (f = R/2) で打ち消す。
+
+第一次近似の釣り合い条件 (`analysis/astigmatism.py`):
+
+    Σ_i Δf(f_i, θ_i) = ΔL
+
+等角・等曲率の k 枚鏡では閉形式
+
+    cosθ = √(1 + M²) − M,   M = ΔL / (k·R)
+
+k=2 が Z/X-fold の標準形 (Kogelnik et al. 1972 系;
+レビュー: arXiv:1501.01158 Eq.(9)-(10) と一致)。
+
+`find_compensation_angle()` は閉形式に依存せず、本パッケージの厳密往復行列で
+|m_t − m_s| または結晶内 |ln(w_t/w_s)| を数値最小化する。
+Z-fold プリセット (ℓ=3mm, n=1.82, R=100mm) で閉形式 6.14° に対し
+数値解 6.0–6.4° (指標により異なる) を確認 (tests/test_astigmatism.py)。
+閉形式は第一次近似であり、厳密な真円条件とは ~0.2–0.3° 程度ずれうる。
