@@ -12,3 +12,25 @@ venv/
 .DS_Store
 *.coverage
 htmlcov/
+
+# === 機密・データ保護 (コミット禁止: 実データはリポジトリ外で管理) ===
+# 研究ログ・生データ・測定結果
+data/
+logs/
+measurements/
+*.csv
+*.dat
+*.tdms
+*.spe
+*.sif
+# 文書類 (論文PDF・個人文書)
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+# 秘密情報
+*.token
+*.key
+*.pem
+secrets/
+private/
