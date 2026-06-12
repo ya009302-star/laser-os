@@ -9,7 +9,7 @@
 - `VERIFIED-EXPERIMENT` : 実測データと照合済み
 - `UNVALIDATED` : 未検証
 
-## 1. 自動テストによる検証 (tests/test_core.py, 9件, v0.1.0 時点で全合格)
+## 1. 自動テストによる検証 (v0.2 開発中: tests/ 全17件合格)
 
 | 項目 | テスト | 状態 |
 |---|---|---|
@@ -22,6 +22,8 @@
 | 往復行列の行列式 det=1 (縮約規約) | `test_roundtrip_determinant` | VERIFIED-ANALYTIC |
 | JSON 保存/読込の往復一致 | `test_project_roundtrip` | VERIFIED-ANALYTIC |
 | 間隔スキャンの安定領域検出 | `test_scan_finds_stable_zone` | VERIFIED-ANALYTIC |
+| 補償角: 閉形式↔厳密行列数値解の一致 | `tests/test_astigmatism.py` (4件) | VERIFIED-ANALYTIC |
+| ブリュースター横変位の解析式・経路連続性 | `tests/test_geometry.py` (4件) | VERIFIED-ANALYTIC |
 
 ## 2. 実験との比較
 
@@ -34,7 +36,9 @@ v0.2 以降で予測-実測比較モジュールとともに整備する (docs/R
 
 - 3D 配置 (Z-fold レイアウト座標) の幾何は論理テストのみで、
   実機描画・実寸との照合は UNVALIDATED
-- ブリュースター結晶のビーム横変位は v0.1 ではモデル化していない
+- ブリュースター結晶のビーム横変位: v0.2 で 3D 配置にモデル化
+  (横変位 ℓ(n²−1)/(n²+1) の解析式照合 → VERIFIED-ANALYTIC,
+  tests/test_geometry.py。実機描画・実寸照合は UNVALIDATED のまま)
 - 分散・熱レンズは未実装のため検証対象外
 
 ## 4. 検証の更新規則
