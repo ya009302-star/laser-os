@@ -70,3 +70,43 @@ python -m pytest tests/ -q
 
 GUI はヘッドレス CI では起動できないため、GUI 変更時は import 可能性
 (`python -c "import cavsim.gui.main_window"`) と実機での手動確認を行う。
+
+---
+
+## research/ データ層の追加規則 (laser-research-os 設計の統合)
+
+research/ 配下の研究データ (litdb/matdb/optdb/expdb/compare) を扱う作業は、
+上記に加えて以下に従う。出典は `research/DATA_SCHEMA.md` と `docs/DECISIONS.md`。
+
+### セッション開始プロトコル
+研究データに触れる作業の前に、まず関連ファイルを実際に読む:
+README → 該当タスク → `research/DATA_SCHEMA.md` (データに触る場合) →
+`docs/DECISIONS.md` (規約・設計に触る場合)。
+チャット履歴や記憶を真実の源にしない。ファイルと記憶が食い違えばファイルが勝つ。
+
+### データ完全性 (絶対規則)
+1. **物理値を発明しない。** 「典型値」「およそ」「記憶している係数」を
+   データに書かない。不明な値は `value: null`。
+2. すべての物理量は PhysicalValue オブジェクト (value/unit/condition/
+   source/confidence/data_level) で表す (DATA_SCHEMA §2)。
+3. **AI は一次情報源になれない。** AI が訓練データから出した数値は
+   最大でも `data_level: extracted` / `source.type: ai_model` /
+   `confidence: low` で入り、人間の検証フラグ必須。`verified` 禁止。
+4. `verified` への昇格は、検証可能な出典 (DOI＋ページ/表、データシート、
+   実測＋実験ログ) を伴って、人間のみが行う。
+5. 単位は DATA_SCHEMA §1.3 のとおり明示。無断の単位変換禁止
+   (変換は `source.derivation` に記録)。
+
+### 変更管理 (サイレント変更の禁止)
+スキーマ・物理規約・ディレクトリ構成・スコープを変える場合:
+変更前に ADR ドラフト (動機・変更内容・代替案・影響ファイル一覧) を提示し、
+人間の承認を待つ。承認後、DECISIONS.md (status: accepted) → 該当ファイル →
+CHANGELOG.md の順で更新。DECISIONS.md / DATA_SCHEMA.md / 実データが
+食い違う状態を残さない。
+
+### 禁止事項 (ハードストップ)
+- 出典オブジェクトなしの数値を research/ のデータに書く
+- 人間の指示なく任意のレコードを `verified` にする
+- DECISIONS.md の既存 ADR を編集する (追記専用。supersede で対応)
+- 実験ログ・生データを削除する (`deprecated` にする)
+- 論文 PDF・測定生データ・個人文書を research/ にコミットする (規則7)

@@ -10,6 +10,22 @@ laser-os は cavsim (共振器シミュレータ) だけでなく、研究に必
 > 段階的に追加される。空のサブディレクトリは「未着手」を意味する。
 > 何をいつ作るかは docs/ROADMAP.md に従い、着手は指示によって行う。
 
+## データ設計の正典 (重要)
+
+research/ 配下のすべてのデータ構造・規約は、以下を**正典**とする。
+各サブディレクトリの README に書かれたスキーマは要約であり、
+矛盾する場合は正典が優先する。
+
+- `research/DATA_SCHEMA.md` — 全レコード型 (Material/OpticalElement/
+  Paper/CavitySetup/ExperimentLog) と PhysicalValue 規約、データレベル、
+  単位、バージョニングの完全定義。
+- `docs/DECISIONS.md` — 設計判断記録 (ADR)。PhysicalValue 採用、
+  3 データレベル、ABCD・符号・分散の各規約の決定理由。
+
+この設計は姉妹プロジェクト laser-research-os で確定したものを移植した
+(2026-06-13)。中核思想: **すべての物理値に出典・条件・信頼度を持たせ、
+未知は null、AI が出した値は verified にしない。**
+
 ## コードとデータの分離 (設計原則)
 
 laser-os は 3 層に分離する。混ぜてはならない (CONTRIBUTING 規則1・7)。
