@@ -1,0 +1,102 @@
+{
+  "id": "exp-YYYY-MM-DD-ybfap-spectroscopy-TEMPLATE",
+  "schema": "ExperimentLog",
+  "schema_version": "0.1.0",
+  "_template_note": "Yb:FAP 分光評価テンプレート。測定当日に複製しID/日付/値を埋める。数値はダミー/null。生データはリポジトリ外、data_file は参照のみ。詳細は PROTOCOL_ybfap_spectroscopy.md。",
+  "date": "YYYY-MM-DD",
+  "operator": "",
+  "setup_ref": null,
+  "twin_version": null,
+  "goal": "研究室固有 Yb:FAP の分光評価 (LD校正/入力パワー/蛍光スペクトル/蛍光寿命)",
+  "changes_made": [],
+  "conditions": {
+    "ld_current": { "value": null, "unit": "A", "condition": null, "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+    "ld_set_temperature": { "value": null, "unit": "degC", "condition": null, "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+    "qcw_pulse_width": { "value": 3, "unit": "ms", "condition": "QCW", "source": { "type": "instrument_setting" }, "confidence": "high", "data_level": "raw" },
+    "qcw_rep_rate": { "value": 10, "unit": "Hz", "condition": "QCW", "source": { "type": "instrument_setting" }, "confidence": "high", "data_level": "raw" },
+    "qcw_duty": { "value": 3, "unit": "percent", "condition": "= 3ms x 10Hz", "source": { "type": "derived" }, "confidence": "high", "data_level": "raw" },
+    "coolant_temperature": { "value": 16, "unit": "degC", "condition": null, "source": { "type": "instrument_setting" }, "confidence": "high", "data_level": "raw" },
+    "room_temperature": { "value": null, "unit": "degC", "condition": null, "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" }
+  },
+  "sample": {
+    "sample_id": "",
+    "thickness": { "value": 1.58, "unit": "mm", "condition": null, "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+    "ar_coating": null,
+    "note": "研究室固有作製の Yb:FAP"
+  },
+  "measurements": [
+    {
+      "label": "1_ld_spectrum",
+      "quantity": "spectrum",
+      "purpose": "LD波長校正: 電流ごとに904nmになる設定温度を求める",
+      "result": [
+        { "name": "peak_wavelength", "value": null, "unit": "nm", "condition": "at given LD current/temp", "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+        { "name": "fwhm", "value": null, "unit": "nm", "condition": null, "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+        { "name": "detuning_from_904nm", "value": null, "unit": "nm", "condition": null, "source": { "type": "derived" }, "confidence": null, "data_level": "raw" }
+      ],
+      "current_temperature_table": [],
+      "instrument": "USB2000",
+      "instrument_settings": { "integration_time": null, "averages": null, "nd_filter_OD": null },
+      "data_file": null,
+      "data_level": "raw"
+    },
+    {
+      "label": "2_input_power",
+      "quantity": "output_power",
+      "purpose": "LD電流 vs 入力パワー (結晶直前)",
+      "power_type": "REQUIRED: 'average' or 'peak' を必ず指定 (QCW duty 3%: peak = average / 0.03)",
+      "result": [
+        { "name": "input_power", "value": null, "unit": "W", "condition": "average|peak (要明記)", "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" }
+      ],
+      "current_power_table": [],
+      "transmitted_power_optional": null,
+      "instrument": "Ophir 1Z01500",
+      "instrument_settings": { "wavelength_setting_nm": 904, "position": "after DM1 (just before crystal)" },
+      "data_file": null,
+      "data_level": "raw"
+    },
+    {
+      "label": "3_fluorescence_spectrum",
+      "quantity": "spectrum",
+      "purpose": "蛍光スペクトル (期待ピーク 983/1044 nm)",
+      "result": [
+        { "name": "peak_wavelength_1", "value": null, "unit": "nm", "condition": "expected ~983", "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+        { "name": "peak_wavelength_2", "value": null, "unit": "nm", "condition": "expected ~1044", "source": { "type": "own_measurement" }, "confidence": null, "data_level": "raw" },
+        { "name": "intensity_ratio_983_1044", "value": null, "unit": "dimensionless", "condition": null, "source": { "type": "derived" }, "confidence": null, "data_level": "raw" }
+      ],
+      "geometry": { "L2_position": "", "crystal_position": "" },
+      "instrument": "",
+      "instrument_settings": { "integration_time": null, "averages": null },
+      "data_file": null,
+      "data_level": "raw"
+    },
+    {
+      "label": "4_fluorescence_lifetime",
+      "quantity": "other",
+      "purpose": "蛍光寿命 (期待 ≈800 us)。励起立ち下がり後の自由減衰",
+      "method_checks": {
+        "trigger": "on pump pulse falling edge",
+        "detector_response_vs_lifetime": "REQUIRED: 応答が寿命より十分速いか確認",
+        "pulse_width_vs_lifetime": "REQUIRED: 3ms が寿命より十分長く定常に達するか確認",
+        "reabsorption_check": "optional: 励起位置/試料厚で τ が変わらないか"
+      },
+      "result": [
+        { "name": "lifetime_tau", "value": null, "unit": "us", "condition": "free decay after pump off", "source": { "type": "own_measurement" }, "confidence": null, "data_level": "extracted" }
+      ],
+      "fit": { "range": null, "model": "single_exponential|multi_exponential", "tau_us": null },
+      "instrument": "IWATSU DS-5110B",
+      "instrument_settings": { "timebase": null, "averages": null, "detector": "PD model / response time" },
+      "data_file": null,
+      "data_level": "raw"
+    }
+  ],
+  "observations": "",
+  "interpretation": { "facts": [], "assumptions": [], "open_questions": [] },
+  "outcome": "n/a",
+  "next_actions": [],
+  "provenance": [],
+  "status": "active",
+  "created": "YYYY-MM-DD",
+  "modified": "YYYY-MM-DD",
+  "notes": "テンプレート。修正は notes に日付つきで追記 (ログは追記専用)。"
+}

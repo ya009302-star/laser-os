@@ -17,6 +17,12 @@ htmlcov/
 # 研究ログ・生データ・測定結果
 data/
 logs/
+# 例外: research/expdb/logs/ の実験ログ JSON (記録) は追跡する。
+# 生データ (csv/dat 等) は下の拡張子ルールで引き続き弾かれる。
+!research/expdb/logs/
+!research/expdb/logs/**/
+!research/expdb/logs/**/*.json
+!research/expdb/logs/*.json
 measurements/
 *.csv
 *.dat
