@@ -1,0 +1,32 @@
+{
+  "id": "paper-zelmon1998",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1364/AO.37.004933",
+  "title": "Refractive-index measurements of undoped yttrium aluminum garnet from 0.4 to 5.0 µm",
+  "authors": ["D. E. Zelmon", "D. L. Small", "R. Page"],
+  "year": 1998,
+  "venue": "Applied Optics 37(21), 4933-4935",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yag", "refractive-index", "sellmeier"],
+  "relevance": "YAGのSellmeier係数の標準出典。cavsimのABCD計算に直結。refractiveindex.infoにも収録",
+  "extracted_values": [
+    {
+      "target": "mat-yag.refractive_index.sellmeier",
+      "physical_value_summary": "Sellmeier係数 (0.4-5.0um, fit偏差 < 2e-4)。n(1um) ≈ 1.81",
+      "extracted_by": "ai_model:claude",
+      "extraction_date": "2026-06-15",
+      "data_level": "extracted"
+    }
+  ],
+  "key_claims": [
+    {"claim": "undoped YAG refractive index measured 0.4-5.0um with Sellmeier fit", "locator": "full paper", "kind": "RESULT"}
+  ],
+  "ai_summary": {"text": "YAG屈折率の精密測定とSellmeier係数。fit偏差2e-4以下。レーザーシミュレータの屈折率源として標準", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "Sellmeier係数の具体値はPDF確認後にmatdbへ入れる。AI抽出値はextracted止まり"
+}

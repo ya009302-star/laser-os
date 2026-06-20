@@ -1,0 +1,28 @@
+{
+  "id": "paper-payne1994",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1109/3.272077",
+  "title": "Laser, optical, and thermomechanical properties of Yb-doped fluorapatite",
+  "authors": ["S. A. Payne", "L. K. Smith", "L. D. DeLoach", "W. L. Kway", "J. B. Tassano", "W. F. Krupke"],
+  "year": 1994,
+  "venue": "IEEE Journal of Quantum Electronics 30(1), 170-179",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yb-fap", "cross-section", "lifetime", "thermal", "primary-source"],
+  "relevance": "Yb:FAPの一次資料。π/σ偏光の断面積、寿命(~1.1ms)、母体の熱・機械物性。FAP分光の基礎",
+  "extracted_values": [
+    {"target": "mat-yb-fap.spectroscopy.emission_cross_section", "physical_value_summary": "π: ~5.9e-20cm2, σ: ~1.8e-20cm2 near 1.04um", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"},
+    {"target": "mat-yb-fap.spectroscopy.lifetime", "physical_value_summary": "~1.1 ms (2F5/2)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"},
+    {"target": "mat-yb-fap.spectroscopy.absorption_cross_section", "physical_value_summary": "π pump abs ~6.9e-20cm2 near 905nm", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [
+    {"claim": "slope efficiency up to 79%; quantum-defect limited efficiency is 87%", "locator": "abstract", "kind": "RESULT"}
+  ],
+  "ai_summary": {"text": "Yb:FAP単結晶の包括的物性評価。断面積・寿命・レーザー特性・母体熱物性を収録", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "単結晶値。セラミクスでは有効断面積が異なる(配向平均)"
+}

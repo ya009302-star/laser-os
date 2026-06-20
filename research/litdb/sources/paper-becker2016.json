@@ -1,0 +1,26 @@
+{
+  "id": "paper-becker2016",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1002/crat.201500341",
+  "title": "Linear optical properties and Raman spectroscopy of natural fluorapatite",
+  "authors": ["P. Becker", "E. Libowitzky", "R. Kleinschrodt", "L. Bohatý"],
+  "year": 2016,
+  "venue": "Crystal Research and Technology 51(4), 282-289",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["fap-host", "refractive-index", "dispersion", "sellmeier", "critical"],
+  "relevance": "★FAP系で唯一の精密屈折率データ(430-2400nm)。n_o≈1.633, n_e≈1.629。Furuse/Takimotoグループも引用。cavsimのFAP屈折率源として必須",
+  "extracted_values": [
+    {"target": "mat-fap-host.refractive_index", "physical_value_summary": "n_o≈1.633, n_e≈1.629 (589nm); full dispersion 430-2400nm", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [
+    {"claim": "fluorapatite is uniaxial-negative, birefringence ~0.004", "locator": "full paper", "kind": "FACT"}
+  ],
+  "ai_summary": {"text": "天然フルオロアパタイト(Durango産)の屈折率・分散・Raman。FAP系唯一の精密屈折率源。Sellmeier係数はPDFの表から直接読むこと", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "天然石(undoped)の測定。Ybドープの影響は低濃度なら無視できる仮定。Sellmeier係数はPDF確認後にmatdbへ"
+}

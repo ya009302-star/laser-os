@@ -1,0 +1,44 @@
+{
+  "id": "mat-yb-fap",
+  "schema": "Material",
+  "schema_version": "0.1.0",
+  "name": "Yb:FAP",
+  "formula": "Yb:Ca10(PO4)6F2",
+  "crystal_system": "hexagonal",
+  "form": "ceramic",
+  "lab_specific": true,
+
+  "refractive_index": {
+    "sellmeier_coefficients": null,
+    "n_o": {"value": null, "unit": "dimensionless", "condition": "589nm, RT, undoped host", "source": {"type": "paper", "ref": "paper-becker2016"}, "confidence": null, "data_level": "extracted"},
+    "n_e": {"value": null, "unit": "dimensionless", "condition": "589nm, RT, undoped host", "source": {"type": "paper", "ref": "paper-becker2016"}, "confidence": null, "data_level": "extracted"},
+    "_note": "★FAP系唯一の精密屈折率源はBecker2016(天然石)。ドープFAPのSellmeierは公開文献に存在しない。Sellmeier係数はPDFのTableから直接読む。セラミクス(ランダム配向)では実効屈折率=(2n_o+n_e)/3の近似が要る可能性あり",
+    "_gap": "ドープ済みFAPまたはセラミクスFAPのSellmeier測定論文は未発見。自分の結晶での実測が世界初級になりうる"
+  },
+
+  "spectroscopy": {
+    "emission_cross_section_pi": {"value": null, "unit": "cm2", "condition": "~1043nm, π偏光, RT, 単結晶", "source": {"type": "paper", "ref": "paper-payne1994"}, "confidence": null, "data_level": "extracted"},
+    "emission_cross_section_sigma": {"value": null, "unit": "cm2", "condition": "~1043nm, σ偏光, RT, 単結晶", "source": {"type": "paper", "ref": "paper-payne1994"}, "confidence": null, "data_level": "extracted"},
+    "absorption_cross_section_pi": {"value": null, "unit": "cm2", "condition": "~905nm, π偏光, RT, 単結晶", "source": {"type": "paper", "ref": "paper-payne1994"}, "confidence": null, "data_level": "extracted"},
+    "upper_state_lifetime": {"value": null, "unit": "ms", "condition": "2F5/2, RT, 単結晶", "source": {"type": "paper", "ref": "paper-payne1994"}, "confidence": null, "data_level": "extracted"},
+    "_note": "Payne1994/DeLoach1993は単結晶偏光値。セラミクス(ランダム配向)では有効断面積が異なる。Furuse2021/Takimoto2024がセラミクス固有の振る舞いを議論。自分の結晶の値はown_measurementで上書きしていく"
+  },
+
+  "thermal": {
+    "conductivity": {"value": null, "unit": "W/m/K", "condition": "RT, undoped host", "source": {"type": "paper", "ref": "paper-hopkins1971"}, "confidence": null, "data_level": "extracted"},
+    "thermal_expansion_c": {"value": null, "unit": "1/K", "condition": "[0001], 25C", "source": {"type": "paper", "ref": "paper-hopkins1971"}, "confidence": null, "data_level": "extracted"},
+    "thermal_expansion_a": {"value": null, "unit": "1/K", "condition": "[10-10], 25C", "source": {"type": "paper", "ref": "paper-hopkins1971"}, "confidence": null, "data_level": "extracted"},
+    "dn_dT": null,
+    "_note": "κ≈2W/mK(YAGの約1/5)。dn/dTは公開文献にほぼ存在しない(★データギャップ)。FAPの低い熱伝導率は設計上の重要制約",
+    "_gap": "FAP dn/dTは未発表。熱レンズ予測は大きな不確かさを伴う。own_measurementかFuruseグループへの照会が必要"
+  },
+
+  "collaborative_references": ["paper-furuse2021", "paper-takimoto2024"],
+  "source_status": "literature",
+  "primary_sources": ["paper-payne1994", "paper-deloach1993", "paper-becker2016", "paper-hopkins1971"],
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "研究室固有のCa系FAPセラミクス。文献値は参考(別の結晶/単結晶)。自分の測定(own_measurement)で上書きしていく。lab_specific=trueは、この結晶固有の物性が公開文献にないことを示す"
+}

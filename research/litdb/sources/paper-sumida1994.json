@@ -1,0 +1,25 @@
+{
+  "id": "paper-sumida1994",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": null,
+  "title": "Effect of radiation trapping on fluorescence lifetime and emission cross section measurements in solid-state laser media",
+  "authors": ["D. S. Sumida", "T. Y. Fan"],
+  "year": 1994,
+  "venue": "Optics Letters (確認要)",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yb-yag", "lifetime", "cross-section", "radiation-trapping"],
+  "relevance": "放射トラッピング補正済みのYb:YAG精密値。τ=0.951ms, σ_em=2.3e-20cm2。DeLoach1993の補正版",
+  "extracted_values": [
+    {"target": "mat-yb-yag.spectroscopy.lifetime", "physical_value_summary": "τ = 0.951 ms (300K, trapping補正済)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"},
+    {"target": "mat-yb-yag.spectroscopy.emission_cross_section", "physical_value_summary": "σ_em = 2.3e-20 cm2 (1.03um)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [],
+  "ai_summary": {"text": "放射トラッピング効果を補正したYb:YAGの寿命・断面積の精密測定", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "DOI未確認。PDF入手後に確認してdoiを埋める"
+}

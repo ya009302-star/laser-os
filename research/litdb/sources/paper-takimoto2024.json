@@ -1,0 +1,24 @@
+{
+  "id": "paper-takimoto2024",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1051/epjconf/202430704011",
+  "title": "Laser properties of hexagonal Yb-doped fluorapatite (FAP) transparent ceramics",
+  "authors": ["K. Takimoto", "H. Sone", "S. Nakamura", "H. Furuse"],
+  "year": 2024,
+  "venue": "EPJ Web of Conferences 307, 04011 (EUROPHOTON 2024)",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yb-fap", "ceramic", "laser-demo", "europhoton"],
+  "relevance": "最新のYb:FAPセラミクスレーザー実証。Furuse2021の続き。スロープ効率>8%",
+  "extracted_values": [],
+  "key_claims": [
+    {"claim": "slope efficiency >8% from AR-coated Yb:FAP ceramics", "locator": "abstract", "kind": "RESULT"}
+  ],
+  "ai_summary": {"text": "六方晶Yb:FAPセラミクスのレーザー発振実証。粒径~100nm。Furuse2021の発展研究", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "レーザー実証論文。材料定数の一次出典としてはPayne1994/DeLoach1993を優先"
+}

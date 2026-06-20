@@ -1,0 +1,27 @@
+{
+  "id": "paper-deloach1993",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1109/3.214504",
+  "title": "Evaluation of absorption and emission properties of Yb3+ doped crystals for laser applications",
+  "authors": ["L. D. DeLoach", "S. A. Payne", "L. L. Chase", "L. K. Smith", "W. L. Kway", "W. F. Krupke"],
+  "year": 1993,
+  "venue": "IEEE Journal of Quantum Electronics 29(4), 1179-1191",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yb-fap", "yb-yag", "cross-section", "lifetime", "comparative"],
+  "relevance": "約15種のYbホスト結晶の吸収・発光断面積と寿命を比較。FAP/YAG両方を含む基礎文献",
+  "extracted_values": [
+    {"target": "mat-yb-fap.spectroscopy", "physical_value_summary": "FAP断面積・寿命 (単結晶)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"},
+    {"target": "mat-yb-yag.spectroscopy", "physical_value_summary": "YAG断面積・寿命 (単結晶)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [
+    {"claim": "reciprocity法とFuchtbauer-Ladenburg法で断面積を導出、両法の一致は約20%以内", "locator": "full paper", "kind": "RESULT"}
+  ],
+  "ai_summary": {"text": "Yb3+ドープ結晶の包括的分光評価。FAP/YAG両方の断面積・寿命を収録。相互照合に有用", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": ""
+}

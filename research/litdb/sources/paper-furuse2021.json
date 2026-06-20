@@ -1,0 +1,24 @@
+{
+  "id": "paper-furuse2021",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1364/OME.426701",
+  "title": "High-optical-quality non-cubic Yb3+-doped Ca10(PO4)6F2 (Yb:FAP) laser ceramics",
+  "authors": ["H. Furuse", "T. Okabe", "H. Shirato", "D. Kato", "N. Horiuchi", "K. Morita", "B.-N. Kim"],
+  "year": 2021,
+  "venue": "Optical Materials Express 11(6), 1756-1762",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yb-fap", "ceramic", "optical-quality", "collaborative"],
+  "relevance": "研究室系統に連なるYb:FAPセラミクスの光学品質・損失データ。共同研究(参加前)。同系統結晶なので信頼度高",
+  "extracted_values": [
+    {"target": "mat-yb-fap-ceramic.optical_quality", "physical_value_summary": "透過率・散乱損失のセラミクス固有データ", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [],
+  "ai_summary": {"text": "非立方晶Yb:FAPセラミクスの作製と光学特性評価。研究室の共同研究(本人参加前)", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "共同研究だが本人は参加前。source扱いはpaper(参考文献)。同系統結晶なのでconfidence高め"
+}

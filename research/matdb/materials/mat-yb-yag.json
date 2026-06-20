@@ -1,0 +1,37 @@
+{
+  "id": "mat-yb-yag",
+  "schema": "Material",
+  "schema_version": "0.1.0",
+  "name": "Yb:YAG",
+  "formula": "Yb:Y3Al5O12",
+  "crystal_system": "cubic",
+  "form": "single_crystal_and_ceramic",
+
+  "refractive_index": {
+    "sellmeier_coefficients": null,
+    "n_at_1um": {"value": null, "unit": "dimensionless", "condition": "1064nm, RT", "source": {"type": "paper", "ref": "paper-zelmon1998"}, "confidence": null, "data_level": "extracted"},
+    "_note": "Sellmeier係数はZelmon1998 PDFのTableから直接読んで入れる。AI記憶からの値は入れない"
+  },
+
+  "spectroscopy": {
+    "emission_cross_section": {"value": null, "unit": "cm2", "condition": "1030nm peak, RT, trapping補正済", "source": {"type": "paper", "ref": "paper-sumida1994"}, "confidence": null, "data_level": "extracted"},
+    "absorption_cross_section": {"value": null, "unit": "cm2", "condition": "940nm peak, RT", "source": {"type": "paper", "ref": "paper-deloach1993"}, "confidence": null, "data_level": "extracted"},
+    "upper_state_lifetime": {"value": null, "unit": "ms", "condition": "2F5/2, RT, trapping補正済", "source": {"type": "paper", "ref": "paper-sumida1994"}, "confidence": null, "data_level": "extracted"},
+    "_note": "DeLoach1993は比較値、Sumida&Fan1994がtrapping補正済み精密値。PDF確認後にvalueを埋める"
+  },
+
+  "thermal": {
+    "conductivity": {"value": null, "unit": "W/m/K", "condition": "RT, undoped", "source": {"type": "paper", "ref": "paper-aggarwal2005"}, "confidence": null, "data_level": "extracted"},
+    "dn_dT": {"value": null, "unit": "1/K", "condition": "1064nm, RT", "source": {"type": "paper", "ref": "paper-aggarwal2005"}, "confidence": null, "data_level": "extracted"},
+    "thermal_expansion": {"value": null, "unit": "1/K", "condition": "RT", "source": {"type": "paper", "ref": "paper-aggarwal2005"}, "confidence": null, "data_level": "extracted"},
+    "_note": "Aggarwal2005が80-300Kカバー。300K以上はFuruse2014 ceramic"
+  },
+
+  "source_status": "literature",
+  "primary_sources": ["paper-zelmon1998", "paper-deloach1993", "paper-sumida1994", "paper-aggarwal2005"],
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": "値はすべてnull。PDF確認後に埋め、confirmed後にverifiedに昇格。Ybドープの屈折率への影響は低濃度では無視できる"
+}

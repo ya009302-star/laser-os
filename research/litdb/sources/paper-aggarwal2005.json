@@ -1,0 +1,24 @@
+{
+  "id": "paper-aggarwal2005",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1063/1.2128696",
+  "title": "Measurement of thermo-optic properties of Y3Al5O12, Lu3Al5O12, YAlO3, LiYF4, LiLuF4, BaY2F8, KGd(WO4)2, and KY(WO4)2 laser crystals in the 80-300 K temperature range",
+  "authors": ["R. L. Aggarwal", "D. J. Ripin", "J. R. Ochoa", "T. Y. Fan"],
+  "year": 2005,
+  "venue": "Journal of Applied Physics 98(10), 103514",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["yag", "thermal", "dn-dT", "thermal-conductivity"],
+  "relevance": "YAGの熱物性(κ,dn/dT,α,Cp)の精密測定(80-300K)。熱レンズモデルの一次出典",
+  "extracted_values": [
+    {"target": "mat-yb-yag.thermal", "physical_value_summary": "κ, dn/dT, α, Cp for undoped and Yb-doped YAG (80-300K)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [],
+  "ai_summary": {"text": "多結晶を含むYAGの熱拡散率・比熱・熱伝導率・熱膨張・dn/dTの包括測定(80-300K)", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": ""
+}

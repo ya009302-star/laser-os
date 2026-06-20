@@ -1,0 +1,25 @@
+{
+  "id": "paper-hopkins1971",
+  "schema": "Paper",
+  "schema_version": "0.1.0",
+  "doi": "10.1063/1.1659583",
+  "title": "Thermal properties of synthetic fluorapatite crystals",
+  "authors": ["R. H. Hopkins", "R. W. Damon", "P. Piotrowski", "M. S. Walker", "J. H. Uphoff"],
+  "year": 1971,
+  "venue": "Journal of Applied Physics 42(1), 272-275",
+  "bibtex": "",
+  "pdf_path": null,
+  "tags": ["fap-host", "thermal-conductivity", "thermal-expansion"],
+  "relevance": "FAP母体の熱伝導率(κ≈2.0W/mK)と熱膨張。Payne1994の熱物性の元出典。FAP熱レンズ計算用",
+  "extracted_values": [
+    {"target": "mat-fap-host.thermal.conductivity", "physical_value_summary": "κ ≈ 2.0 W/m/K (RT, nearly isotropic)", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"},
+    {"target": "mat-fap-host.thermal.expansion", "physical_value_summary": "α = 10.0e-6/K [0001], 9.4e-6/K [10-10] at 25C", "extracted_by": "ai_model:claude", "extraction_date": "2026-06-15", "data_level": "extracted"}
+  ],
+  "key_claims": [],
+  "ai_summary": {"text": "合成FAPの熱伝導率・熱膨張。κ≈2W/mK(YAGの約1/5)。dn/dTは含まない(FAP dn/dTはデータギャップ)", "model": "claude", "date": "2026-06-15", "is_primary_source": false},
+  "provenance": [],
+  "status": "active",
+  "created": "2026-06-15",
+  "modified": "2026-06-15",
+  "notes": ""
+}
